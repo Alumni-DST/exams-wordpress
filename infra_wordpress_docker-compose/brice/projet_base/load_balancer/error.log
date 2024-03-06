@@ -1,0 +1,7 @@
+2023/12/15 19:25:29 [error] 57#57: *140 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 91.166.140.210, server: sprint2.brice-devops.cloudns.eu, request: "GET /wp-admin/install.php HTTP/1.1", upstream: "http://192.168.10.11:80/wp-admin/install.php", host: "52.211.34.156"
+2023/12/16 14:30:29 [notice] 749#749: signal process started
+2023/12/16 14:30:35 [notice] 752#752: signal process started
+2023/12/16 14:30:38 [notice] 755#755: signal process started
+2023/12/16 14:30:51 [notice] 758#758: signal process started
+2023/12/16 14:30:54 [crit] 759#759: *61 SSL_do_handshake() failed (SSL: error:141CF06C:SSL routines:tls_parse_ctos_key_share:bad key share) while SSL handshaking, client: 144.126.202.105, server: 0.0.0.0:443
+2023/12/16 14:32:14 [crit] 759#759: *129 SSL_do_handshake() failed (SSL: error:141CF06C:SSL routines:tls_parse_ctos_key_share:bad key share) while SSL handshaking, client: 169.150.196.21, server: 0.0.0.0:443
