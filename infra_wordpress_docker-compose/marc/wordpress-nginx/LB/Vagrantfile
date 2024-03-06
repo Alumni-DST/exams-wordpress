@@ -1,0 +1,30 @@
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+
+
+# Nouveau server NGINX / charge entre les 2 Wordpress 
+Vagrant.configure("2") do |config|
+    config.vm.define "exam2_LB" do |exam2_LB|
+    exam2_LB.vm.network :private_network, ip: "192.168.110.10", netmask: 24
+    exam2_LB.vm.network "forwarded_port", guest: 80, host: 80, auto_correct: false
+    exam2_LB.vm.network "forwarded_port", guest: 443, host: 443, auto_correct: false
+    exam2_LB.vm.provider "docker" do |exam2_LB|
+    exam2_LB.build_dir = "."
+    exam2_LB.has_ssh = true
+    exam2_LB.privileged = true
+    exam2_LB.create_args = ["-v", "/sys/fs/cgroup:/sys/fs/cgroup:ro"]
+    exam2_LB.name = "exam2_infra2_LB"
+    exam2_LB.volumes = [
+      "/infra2_exam2/apps:/infra2_exam2/apps",
+      "/infra2_exam2/logs:/infra2_exam2/logs",
+      "/infra2_exam2/backup/:/infra2_exam2/backup",
+       "/etc/letsencrypt:/etc/letsencrypt"
+     # "/etc/nginx/sites-enabled:/etc/nginx/sites-enabled",
+     # "/etc/nginx/sites-available:/etc/nginx/sites-available"
+       ]
+   end
+  end
+end
+
+
+
+

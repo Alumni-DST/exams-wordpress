@@ -1,0 +1,29 @@
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+
+# server de depart LEMP
+# WP origine
+# Wordpress 1
+Vagrant.configure("2") do |config|
+    config.vm.define "exam2_WP1" do |exam2_WP1|
+    exam2_WP1.vm.network :private_network, ip: "192.168.110.11", netmask: 24
+    #exam2_WP1.vm.network "forwarded_port", guest: 80, host: 80, auto_correct: false
+    #exam2_WP1.vm.network "forwarded_port", guest: 443, host: 443, auto_correct: false
+    exam2_WP1.vm.provider "docker" do |exam2_WP1|
+    exam2_WP1.build_dir = "."
+    exam2_WP1.has_ssh = true
+    exam2_WP1.privileged = true
+    exam2_WP1.create_args = ["-v", "/sys/fs/cgroup:/sys/fs/cgroup:ro"]
+    exam2_WP1.name = "exam2_infra2_WP1"
+    exam2_WP1.volumes = [
+      "/infra2_exam2/apps:/infra2_exam2/apps",
+      "/infra2_exam2/logs:/infra2_exam2/logs",
+      "/infra2_exam2/backup/:/infra2_exam2/backup",
+      "/etc/letsencrypt:/etc/letsencrypt"
+       ]
+   end
+  end
+end
+
+
+
+
