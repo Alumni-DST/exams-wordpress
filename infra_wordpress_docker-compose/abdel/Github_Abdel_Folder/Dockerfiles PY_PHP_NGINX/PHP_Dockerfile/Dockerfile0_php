@@ -1,0 +1,27 @@
+FROM php:7.4-fpm-alpine
+MAINTAINER ABDELLAH B.
+
+
+# Installation des dépendances supplémentaires si nécessaire
+# Exemple : RUN apt-get update && apt-get install -y \
+#     package1 \
+#     package2 \
+#     && rm -rf /var/lib/apt/lists/*
+
+# Configuration PHP
+# Exemple : COPY php.ini /usr/local/etc/php/conf.d/
+
+# Configuration de l'application (si nécessaire)
+# Exemple : COPY app.conf /etc/nginx/conf.d/
+
+# Répertoire de travail
+WORKDIR /var/www/html
+
+# Copie des fichiers de l'application
+COPY . /var/www/html
+
+# Exposition du port
+EXPOSE 9000
+
+# Commande par défaut pour démarrer PHP FPM
+CMD ["php-fpm"]

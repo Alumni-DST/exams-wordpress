@@ -1,0 +1,89 @@
+FROM alpine:3.19
+MAINTAINER ABDELLAH B.
+
+#Container named POD_DEV
+
+# Éviter les questions interactives lors de l'installation de paquets
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Avec environnement PYTHON
+ENV PYTHONUNBUFFERED=1
+
+# Exposer le port 80
+EXPOSE 80
+
+
+# Update upgrade packages apt list
+RUN apk update && \
+    apk upgrade
+
+
+# Répertoire de travail dans le conteneur comme /myapp
+WORKDIR /myapp
+
+# Copie le script Python dans le conteneur
+COPY fast_api_test_sequence.py /myapp
+
+# Créer un répertoire pour l'environnement virtuel
+RUN mkdir venv
+ENV VIRTUAL_ENV=venv
+
+# Créer un répertoire pour les dependances
+RUN mkdir -p Requirements
+RUN mv Requirements $VIRTUAL_ENV
+ENV REQUIREMENTS=$VIRTUAL_ENV/Requirements
+# Copier tous les fichiers du répertoire Requirements vers le répertoire $REQUIREMENTS dans le conteneur
+COPY Requirements/. $REQUIREMENTS/
+
+# Installer les dépendances nécessaires
+#    apk add --no-cache bash python3-dev build-base
+RUN apk update && \
+   apk add --no-cache python3 && \
+   if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi &&\
+   rm /usr/lib/python3.11/EXTERNALLY-MANAGED &&\
+   python -m ensurepip && rm -r /usr/lib/python*/ensurepip &&\
+   if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
+
+# Créer un répertoire pour l'environnement virtuel
+RUN mkdir -p /myapp/venv
+ENV VIRTUAL_ENV=/myapp/venv
+
+RUN python3 -m venv $VIRTUAL_ENV
+
+# Définir l'environnement virtuel comme le répertoire actif
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Activate virtual environment
+RUN source $VIRTUAL_ENV/bin/activate
+
+# Installer les dépendances de l'application
+# avec upgrade des version de la liste requirements
+# RUN pip install --no-cache --upgrade pip setuptools wheel && \
+RUN pip3 install --no-cache --upgrade pip &&\
+    pip3 install --no-cache --upgrade  -r $REQUIREMENTS/dev.txt &&\
+    rm -rf /root/.cache && \
+    pip3 cache purge
+
+
+# DeActivate virtual environment
+RUN source $VIRTUAL_ENV/bin/deactivate
+
+
+# Install et démarre OpenSSH
+RUN apk add --no-cache openssh && \
+    rc-service sshd start && \
+    rc-update add sshd
+
+# Nettoyage fichiers temp et cache des packages apk
+RUN apk cache clean && \
+    apk clean && \
+    rm -rf /tmp/* /var/tmp/*
+
+# Exposer le port 80
+EXPOSE 80
+
+# Commande par défaut pour lancer l'application
+CMD ["python3", /myapp/fast_api_test_sequence.py"]
+
+# Exécute le script Python au démarrage du conteneur
+# ENTRYPOINT ["/myapp/fast_api_test_sequence.py"]

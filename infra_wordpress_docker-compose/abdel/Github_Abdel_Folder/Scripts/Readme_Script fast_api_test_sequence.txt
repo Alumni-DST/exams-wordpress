@@ -1,0 +1,3 @@
+Le script Python "fast_api_test_sequence.py" utilise la bibliothèque requests pour interroger un site WordPress et rechercher une occurrence spécifique sur la page du site Wordpress
+
+Assurez-vous de remplacer 'https://example.com' par l'URL de votre site WordPress réel et 'votre_mot_clé' par le mot-clé que vous souhaitez rechercher sur la page. Vous pouvez exécuter ce script pour effectuer une requête GET vers le site WordPress et rechercher l'occurrence spécifiée dans le contenu HTML de la page.
