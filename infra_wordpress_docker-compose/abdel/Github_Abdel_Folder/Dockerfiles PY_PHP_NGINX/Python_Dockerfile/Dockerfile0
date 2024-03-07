@@ -1,6 +1,5 @@
 FROM alpine:3.19
-MAINTAINER ABDELLAH B.
-
+LABEL maintainer="Abdellah B."
 
 WORKDIR /myapp
 
