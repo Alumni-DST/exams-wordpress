@@ -1,6 +1,5 @@
 FROM php:7.4-fpm-alpine
-MAINTAINER ABDELLAH B.
-
+LABEL maintainer="Abdellah B."
 
 # Installation des dépendances supplémentaires si nécessaire
 # Exemple : RUN apt-get update && apt-get install -y \
