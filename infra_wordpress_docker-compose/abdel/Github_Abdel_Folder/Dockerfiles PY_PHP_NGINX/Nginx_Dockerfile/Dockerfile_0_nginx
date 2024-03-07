@@ -1,5 +1,5 @@
 FROM nginx:alpine
-MAINTAINER ABDELLAH B.
+LABEL maintainer="Abdellah B."
 
 # Copier la configuration personnalisée si nécessaire
 # COPY nginx.conf /etc/nginx/nginx.conf
