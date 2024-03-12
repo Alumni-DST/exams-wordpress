@@ -1,0 +1,23 @@
+FROM alpine:3.19
+LABEL maintainer="Abdellah B."
+
+
+WORKDIR /myapp
+
+COPY fast_api_test_sequence.py /myapp/
+
+RUN apk update && \
+    apk add --no-cache bash && \
+    apk add --no-cache python3 && \
+    if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi && \
+    rm /usr/lib/python3.11/EXTERNALLY-MANAGED && \
+    python -m ensurepip && rm -r /usr/lib/python*/ensurepip && \
+    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
+    pip install --no-cache --upgrade pip setuptools wheel && \
+    pip3 install requests && \
+    rm -r /root/.cache
+
+RUN chmod u+x /myapp/fast_api_test_sequence.py
+
+ENTRYPOINT ["/myapp/fast_api_test_sequence.py"]
+# CMD ["python3", "fast_api_test_sequence.py"]
